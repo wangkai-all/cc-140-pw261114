@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>航班运行监控</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+  <h1>航班运行监控</h1>
+  <div class="sub">导入计划、实际起降、机尾号与已确认联程关系，按机场与日期查看延误；点击航班查看前序飞机与受影响后续航段。所有当地时间已按机场时区统一换算。</div>
+</header>
+
+<div class="import-bar">
+  <label class="file-btn" id="btn-airports">机场/时区<input type="file" accept=".csv" data-kind="airports"></label>
+  <label class="file-btn" id="btn-plan">航班计划<input type="file" accept=".csv" data-kind="plan"></label>
+  <label class="file-btn" id="btn-actuals">实际起降<input type="file" accept=".csv" data-kind="actuals"></label>
+  <label class="file-btn" id="btn-connections">联程关系（可多选）<input type="file" accept=".csv" data-kind="connections" multiple></label>
+  <button class="primary" id="load-sample">载入示例数据</button>
+  <span class="sub" id="import-status" style="color:var(--text-muted);font-size:12px">尚未导入数据</span>
+</div>
+
+<div class="controls">
+  <label>机场 <select id="sel-airport"></select></label>
+  <label>日期 <select id="sel-date"></select></label>
+  <label>方向 <select id="sel-dir">
+    <option value="dep">出港</option>
+    <option value="arr">进港</option>
+  </select></label>
+</div>
+
+<div id="scenario-banner">
+  <strong>情景推算中</strong><span id="scenario-desc"></span>
+  <button id="clear-scenario">清除情景</button>
+</div>
+
+<div class="kpi-strip" id="kpi-strip"></div>
+
+<div class="layout">
+  <div class="panel">
+    <h2 id="legs-title">航段</h2>
+    <div style="overflow-x:auto">
+    <table id="legs-table">
+      <thead>
+        <tr>
+          <th>航班</th><th>航线</th><th>计划离港</th><th>实际离港</th>
+          <th>计划到港</th><th>实际到港</th><th>机尾号</th>
+          <th class="num">离港延误</th><th class="num">新增/带入</th><th>状态</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>航段详情与飞机链</h2>
+    <div class="body" id="detail">
+      <div class="detail-empty">点击左侧航段查看前序飞机、后续航段与联程影响</div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-panels">
+  <div class="panel">
+    <h2>联程风险（按已确认旅客组，同组跨表只计一次）</h2>
+    <div class="body">
+      <div id="conn-summary" style="margin-bottom:8px"></div>
+      <table id="conn-table">
+        <thead><tr><th>旅客组</th><th class="num">人数</th><th>前段</th><th>后段</th><th>衔接机场</th><th class="num">可用/最短</th><th>状态</th><th>依据</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>异常与需人工核对</h2>
+    <div class="body"><ul class="anomaly-list" id="anomaly-list"></ul></div>
+  </div>
+</div>
+
+<footer>
+  说明：延误拆分中"带入"指前段实际到达晚到、扣除该机场最小周转后仍挤压本段计划起飞的部分；"新增"为本段自身产生。
+  缺少实际到达时刻的航段延误记为未知，不按准点处理；时间矛盾的航段在异常面板单独列出。
+  情景推算只向后计算受影响范围，有实际记录的航段保持实际值，推算结果单独标注，不构成自动改签。
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

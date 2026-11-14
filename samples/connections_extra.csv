@@ -1,0 +1,4 @@
+group,from_flight,to_flight,date,to_date,passengers
+G2,CA501,CA502,2026-11-14,2026-11-14,15
+G6,CA103,CA301,2026-11-14,2026-11-14,9
+G7,CA503,CA1601,2026-11-14,2026-11-14,6

@@ -1,0 +1,6 @@
+code,name,timezone,min_turnaround_min,min_connection_min
+PEK,北京首都,Asia/Shanghai,50,60
+SHA,上海虹桥,Asia/Shanghai,45,60
+CAN,广州白云,Asia/Shanghai,50,60
+SVO,莫斯科谢列梅捷沃,Europe/Moscow,60,90
+HNL,檀香山,Pacific/Honolulu,60,90
